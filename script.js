@@ -6,6 +6,8 @@ let startBtn = document.querySelector('#startBtn');
 let answersEl = document.querySelector('#answers');
 let timer;
 let QI = -1;
+let highscore = 0;
+
 const questions = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -73,7 +75,6 @@ function setTime() {
     timerEl.textContent = timer
     if (timer === 0) {
       clearInterval(timerInterval);
-
     }
   }, 1000)
 }
@@ -91,7 +92,6 @@ function setQuestions() {
 }
 function setAnswers() {
   // todo
-
   questions[QI].answers.forEach(answers => {
     let answersBtn = document.createElement('button');
     answersBtn.innerText = answers.Text;
@@ -99,6 +99,8 @@ function setAnswers() {
     if (answers.correct) {
       answersBtn.dataset.correct = answers.correct
       console.log('correct')
+    }else{
+      
     }
     answersEl.appendChild(answersBtn);
     answersBtn.addEventListener('click',function setAnswers2() {
@@ -113,16 +115,47 @@ function setAnswers() {
 }
 function setHighscore() {
   // todo
+
 }
-function getHighscores() {
+function getHighscores(event) {
   // todo
+  
+  var FN = document.createElement("input");
+FN.setAttribute("type", "text");
+FN.setAttribute("name", "FullName");
+FN.setAttribute("placeholder", "Full Name");
+FN.setAttribute("id", "FullName");
+var s = document.createElement("input");
+s.setAttribute("type", "submit");
+s.setAttribute("value", "Submit");
+s.addEventListener('click',function (e) {
+  e.preventDefault()
+  const studentHighscore = {
+    student: FN.value,
+    score: highscore,
+  }
+  localStorage.setItem('Name', studentHighscore.student)
+  localStorage.setItem('Highscore', studentHighscore.score)
+  console.log(studentHighscore)
+})
+questionsEl.appendChild(FN)
+questionsEl.appendChild(s);
 }
-function getCorrectAnswer() {
+function getCorrectAnswer(e) {
   // todo
+const selectedBtn = e.target
+const correct = selectedBtn.dataset.correct === 'true';
+if (correct) {
+  highscore++
+  localStorage.setItem('score', highscore)
+  console.log('correct')
+}
 }
 function resetState() {
   questionsEl.innerHTML = '';
-  answersEl.innerHTML = '';
+  while (answersEl.firstChild) {
+    answersEl.removeChild(answersEl.firstChild)
+  }
 }
 function endQuiz() {
   // todo
@@ -131,8 +164,9 @@ function endQuiz() {
   timerEl.innerHTML = '';
   startBtn.style.visibility = 'visible'
   startBtn.innerHTML = 'Restart Quiz'
-  let form = document.createElement('form')
-  let nameInput = document.createElement('input')
+getHighscores()
+
+
   startBtn.addEventListener('click',restartQuiz)
 } 
 function restartQuiz() {
