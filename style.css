@@ -19,6 +19,9 @@ main{
 h3{
     text-align: center;
 }
+#Highscore{
+ cursor: pointer;
+}
 #answers{
     display: flex;
     flex-direction: column;
